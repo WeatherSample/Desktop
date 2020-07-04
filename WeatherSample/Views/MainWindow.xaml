@@ -97,7 +97,9 @@
                     <Style TargetType="{x:Type ItemsControl}">
                         <Setter Property="Visibility" Value="Visible" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=ItemsSource.Count}" Value="0">
+                            <DataTrigger
+                                Binding="{Binding RelativeSource={RelativeSource Self}, Path=ItemsSource.Count}"
+                                Value="0">
                                 <Setter Property="Visibility" Value="Collapsed" />
                             </DataTrigger>
                         </Style.Triggers>
@@ -124,7 +126,8 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <Grid Margin="5,0,5,0" Visibility="{Binding ElementName=DailyItemContainer, Path=Visibility}">
+            <Grid Margin="5,0,5,0"
+                  Visibility="{Binding ElementName=DailyItemContainer, Path=Visibility}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -139,7 +142,6 @@
                     Daily
                 </TextBlock>
                 <ScrollViewer
-                    x:Name="DailyScrollView"
                     Grid.Row="1"
                     MaxWidth="985"
                     Margin="15,0,15,15"
@@ -151,7 +153,9 @@
                             <Style TargetType="{x:Type ItemsControl}">
                                 <Setter Property="Visibility" Value="Visible" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=ItemsSource.Count}" Value="0">
+                                    <DataTrigger
+                                        Binding="{Binding RelativeSource={RelativeSource Self}, Path=ItemsSource.Count}"
+                                        Value="0">
                                         <Setter Property="Visibility" Value="Collapsed" />
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -206,19 +210,20 @@
                     Hourly
                 </TextBlock>
                 <ScrollViewer
-                    x:Name="HourlyScrollView"
                     Grid.Row="3"
                     MaxWidth="985"
                     Margin="15,0,15,15"
                     HorizontalContentAlignment="Center"
                     HorizontalScrollBarVisibility="Auto"
                     VerticalScrollBarVisibility="Disabled">
-                    <ItemsControl x:Name="HourlyItemContainer" ItemsSource="{Binding DailyData}">
+                    <ItemsControl ItemsSource="{Binding DailyData}">
                         <ItemsControl.Style>
                             <Style TargetType="{x:Type ItemsControl}">
                                 <Setter Property="Visibility" Value="Visible" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=ItemsSource.Count}" Value="0">
+                                    <DataTrigger
+                                        Binding="{Binding RelativeSource={RelativeSource Self}, Path=ItemsSource.Count}"
+                                        Value="0">
                                         <Setter Property="Visibility" Value="Collapsed" />
                                     </DataTrigger>
                                 </Style.Triggers>
