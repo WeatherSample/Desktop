@@ -128,6 +128,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <TextBlock
                     Grid.Row="0"
@@ -196,9 +198,16 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </ScrollViewer>
+                <TextBlock
+                    Grid.Row="2"
+                    Margin="45,15,15,15"
+                    FontFamily="Segoe UI Slight"
+                    FontSize="24">
+                    Hourly
+                </TextBlock>
                 <ScrollViewer
                     x:Name="HourlyScrollView"
-                    Grid.Row="1"
+                    Grid.Row="3"
                     MaxWidth="985"
                     Margin="15,0,15,15"
                     HorizontalContentAlignment="Center"
