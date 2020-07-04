@@ -1,4 +1,7 @@
-﻿namespace WeatherSample.Views
+﻿using System;
+using System.Windows;
+
+namespace WeatherSample.Views
 {
     public partial class MainWindow
     {
