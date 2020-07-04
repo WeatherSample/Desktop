@@ -1,9 +1,9 @@
-﻿<Application x:Class="WeatherSample.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:WeatherSample"
-             StartupUri="MainWindow.xaml">
-    <Application.Resources>
-         
-    </Application.Resources>
-</Application>
+﻿<prism:PrismApplication
+    x:Class="WeatherSample.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:WeatherSample"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:prism1="clr-namespace:Prism;assembly=Prism.Wpf">
+    <Application.Resources />
+</prism:PrismApplication>
