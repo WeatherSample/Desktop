@@ -10,305 +10,307 @@
     <Window.Resources>
         <converters:NullToVisibility x:Key="NullToVisibility" />
     </Window.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid Background="#2b2b2b">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <TextBlock
-                Grid.Row="0"
-                Grid.Column="0"
-                Padding="15"
-                FontFamily="Segoe UI"
-                FontSize="16"
-                FontWeight="Light"
-                Foreground="#fbfbfb">
-                Forecast
-            </TextBlock>
-            <StackPanel
-                Grid.Column="1"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Orientation="Horizontal">
-                <TextBox
-                    MinWidth="100"
-                    Padding="5"
-                    Background="#22ffffff"
-                    BorderBrush="#FF080808"
-                    Foreground="#bcbcbc"
-                    Text="{Binding Path=SelectedCity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <TextBox.Resources>
-                        <Style TargetType="{x:Type Border}">
-                            <Setter Property="CornerRadius" Value="4" />
-                        </Style>
-                    </TextBox.Resources>
-                </TextBox>
-                <Button
-                    MinWidth="65"
-                    Margin="10,0,10,0"
-                    Command="{Binding FetchCommand, IsAsync=True}">
-                    Fetch
-                    <Button.Resources>
-                        <Style TargetType="{x:Type Border}">
-                            <Setter Property="CornerRadius" Value="4" />
-                        </Style>
-                    </Button.Resources>
-                </Button>
-            </StackPanel>
-        </Grid>
-        <StackPanel
-            Grid.Row="1"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center">
-            <TextBlock
-                Margin="10"
-                FontFamily="Segoe UI Semilight"
-                FontSize="32"
-                Text="{Binding CurrentCity, TargetNullValue=Fetching ...}"
-                TextAlignment="Center" />
-            <TextBlock
-                Margin="0"
-                FontFamily="Segoe UI Light"
-                FontSize="72"
-                Text="{Binding CurrentTemp}"
-                TextAlignment="Center"
-                Visibility="{Binding CurrentTemp, Converter={StaticResource NullToVisibility}}" />
-            <TextBlock
-                Margin="0,0,0,15"
-                FontFamily="Segoe UI Semilight"
-                FontSize="26"
-                Text="{Binding CurrentWeather}"
-                TextAlignment="Center"
-                Visibility="{Binding CurrentWeather, Converter={StaticResource NullToVisibility}}" />
-            <TextBlock
-                Margin="0,0,0,5"
-                FontSize="14"
-                FontWeight="Medium"
-                Text="{Binding UpdatedAt}"
-                TextAlignment="Center"
-                Visibility="{Binding UpdatedAt, Converter={StaticResource NullToVisibility}}" />
-            <ItemsControl ItemsSource="{Binding MetaData, UpdateSourceTrigger=PropertyChanged}">
-                <ItemsControl.Style>
-                    <Style TargetType="{x:Type ItemsControl}">
-                        <Setter Property="Visibility" Value="Visible" />
-                        <Style.Triggers>
-                            <DataTrigger
-                                Binding="{Binding RelativeSource={RelativeSource Self}, Path=ItemsSource.Count}"
-                                Value="0">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ItemsControl.Style>
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel
-                            MaxWidth="550"
-                            Margin="10"
-                            HorizontalAlignment="Center"
-                            IsItemsHost="True" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel>
-                            <TextBlock
-                                Margin="15,0,15,5"
-                                FontSize="14"
-                                FontWeight="Medium"
-                                Text="{Binding Value}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-            <Grid Margin="5,0,5,0"
-                  Visibility="{Binding ElementName=DailyItemContainer, Path=Visibility}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Background="#2b2b2b">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
                 <TextBlock
                     Grid.Row="0"
-                    Margin="50,15,15,5"
-                    FontFamily="Segoe UI Slight"
-                    FontSize="24">
-                    Daily
+                    Grid.Column="0"
+                    Padding="15"
+                    FontFamily="Segoe UI"
+                    FontSize="16"
+                    FontWeight="Light"
+                    Foreground="#fbfbfb">
+                    Forecast
                 </TextBlock>
-                <ScrollViewer
-                    Grid.Row="1"
-                    MaxWidth="1100"
-                    Margin="15,0,15,15"
-                    HorizontalContentAlignment="Center"
-                    HorizontalScrollBarVisibility="Auto"
-                    VerticalScrollBarVisibility="Disabled">
-                    <ListView
-                        x:Name="DailyItemContainer"
-                        BorderBrush="Transparent"
-                        ItemsSource="{Binding DailyData}"
-                        SelectedIndex="{Binding SelectedDay, Mode=TwoWay}">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                            <ContentPresenter />
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter Property="Margin" Value="15,0,15,15" />
-                                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                <StackPanel
+                    Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <TextBox
+                        MinWidth="100"
+                        Padding="5"
+                        Background="#22ffffff"
+                        BorderBrush="#FF080808"
+                        Foreground="#bcbcbc"
+                        Text="{Binding Path=SelectedCity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="4" />
                             </Style>
-                        </ListView.ItemContainerStyle>
-                        <ListView.Style>
-                            <Style TargetType="{x:Type ItemsControl}">
-                                <Setter Property="Margin" Value="5" />
-                                <Setter Property="Visibility" Value="Visible" />
-                                <Style.Triggers>
-                                    <DataTrigger
-                                        Binding="{Binding RelativeSource={RelativeSource Self}, Path=ItemsSource.Count}"
-                                        Value="0">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
+                        </TextBox.Resources>
+                    </TextBox>
+                    <Button
+                        MinWidth="65"
+                        Margin="10,0,10,0"
+                        Command="{Binding FetchCommand, IsAsync=True}">
+                        Fetch
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="4" />
                             </Style>
-                        </ListView.Style>
-                        <ListView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel
-                                    Width="auto"
-                                    Margin="10"
-                                    HorizontalAlignment="Center"
-                                    IsItemsHost="True"
-                                    Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Border Background="#FFFFFF">
-                                    <Border.Style>
-                                        <Style TargetType="Border">
-                                            <Setter Property="BorderThickness" Value="2" />
-                                            <Style.Triggers>
-                                                <DataTrigger
-                                                    Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
-                                                    Value="True">
-                                                    <Setter Property="BorderBrush" Value="#bcbcbc" />
-                                                </DataTrigger>
-                                                <DataTrigger
-                                                    Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
-                                                    Value="True">
-                                                    <Setter Property="BorderBrush" Value="#0074CF" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Border.Style>
-                                    <StackPanel>
+                        </Button.Resources>
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <StackPanel
+                Grid.Row="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <TextBlock
+                    Margin="10"
+                    FontFamily="Segoe UI Semilight"
+                    FontSize="32"
+                    Text="{Binding CurrentCity, TargetNullValue=Fetching ...}"
+                    TextAlignment="Center" />
+                <TextBlock
+                    Margin="0"
+                    FontFamily="Segoe UI Light"
+                    FontSize="72"
+                    Text="{Binding CurrentTemp}"
+                    TextAlignment="Center"
+                    Visibility="{Binding CurrentTemp, Converter={StaticResource NullToVisibility}}" />
+                <TextBlock
+                    Margin="0,0,0,15"
+                    FontFamily="Segoe UI Semilight"
+                    FontSize="26"
+                    Text="{Binding CurrentWeather}"
+                    TextAlignment="Center"
+                    Visibility="{Binding CurrentWeather, Converter={StaticResource NullToVisibility}}" />
+                <TextBlock
+                    Margin="0,0,0,5"
+                    FontSize="14"
+                    FontWeight="Medium"
+                    Text="{Binding UpdatedAt}"
+                    TextAlignment="Center"
+                    Visibility="{Binding UpdatedAt, Converter={StaticResource NullToVisibility}}" />
+                <ItemsControl ItemsSource="{Binding MetaData, UpdateSourceTrigger=PropertyChanged}">
+                    <ItemsControl.Style>
+                        <Style TargetType="{x:Type ItemsControl}">
+                            <Setter Property="Visibility" Value="Visible" />
+                            <Style.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding RelativeSource={RelativeSource Self}, Path=ItemsSource.Count}"
+                                    Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ItemsControl.Style>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel
+                                MaxWidth="550"
+                                Margin="10"
+                                HorizontalAlignment="Center"
+                                IsItemsHost="True" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock
+                                    Margin="15,0,15,5"
+                                    FontSize="14"
+                                    FontWeight="Medium"
+                                    Text="{Binding Value}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Grid Margin="5,0,5,0"
+                      Visibility="{Binding ElementName=DailyItemContainer, Path=Visibility}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Margin="50,15,15,5"
+                        FontFamily="Segoe UI Slight"
+                        FontSize="24">
+                        Daily
+                    </TextBlock>
+                    <ScrollViewer
+                        Grid.Row="1"
+                        MaxWidth="1100"
+                        Margin="15,0,15,15"
+                        HorizontalContentAlignment="Center"
+                        HorizontalScrollBarVisibility="Auto"
+                        VerticalScrollBarVisibility="Disabled">
+                        <ListView
+                            x:Name="DailyItemContainer"
+                            BorderBrush="Transparent"
+                            ItemsSource="{Binding DailyData}"
+                            SelectedIndex="{Binding SelectedDay, Mode=TwoWay}">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                                <ContentPresenter />
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="Margin" Value="15,0,15,15" />
+                                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.Style>
+                                <Style TargetType="{x:Type ItemsControl}">
+                                    <Setter Property="Margin" Value="5" />
+                                    <Setter Property="Visibility" Value="Visible" />
+                                    <Style.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding RelativeSource={RelativeSource Self}, Path=ItemsSource.Count}"
+                                            Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.Style>
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel
+                                        Width="auto"
+                                        Margin="10"
+                                        HorizontalAlignment="Center"
+                                        IsItemsHost="True"
+                                        Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#FFFFFF">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="BorderThickness" Value="2" />
+                                                <Style.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
+                                                        Value="True">
+                                                        <Setter Property="BorderBrush" Value="#bcbcbc" />
+                                                    </DataTrigger>
+                                                    <DataTrigger
+                                                        Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
+                                                        Value="True">
+                                                        <Setter Property="BorderBrush" Value="#0074CF" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <StackPanel>
+                                            <TextBlock
+                                                Margin="5,5,2,2"
+                                                FontSize="20"
+                                                FontWeight="Regular"
+                                                Text="{Binding DayName}" />
+                                            <StackPanel Margin="5,2,2,2" Orientation="Horizontal">
+                                                <TextBlock
+                                                    FontSize="18"
+                                                    FontWeight="Medium"
+                                                    Text="{Binding High}" />
+                                                <TextBlock
+                                                    Margin="5,0,5,1"
+                                                    VerticalAlignment="Bottom"
+                                                    FontSize="14"
+                                                    FontWeight="Medium"
+                                                    Foreground="#444444"
+                                                    Text="{Binding Low}" />
+                                            </StackPanel>
+                                            <TextBlock
+                                                Margin="5,2,2,5"
+                                                FontSize="12"
+                                                FontWeight="Regular"
+                                                Text="{Binding Description}" />
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </ScrollViewer>
+                    <TextBlock
+                        Grid.Row="2"
+                        Margin="50,15,15,15"
+                        FontFamily="Segoe UI Slight"
+                        Visibility="{Binding ElementName=HourlyContainer, Path=Visibility}"
+                        FontSize="24">
+                        Hourly
+                    </TextBlock>
+                    <ScrollViewer
+                        Grid.Row="3"
+                        MaxWidth="985"
+                        Margin="15,0,15,15"
+                        HorizontalContentAlignment="Center"
+                        HorizontalScrollBarVisibility="Auto"
+                        VerticalScrollBarVisibility="Disabled">
+                        <ItemsControl x:Name="HourlyContainer" ItemsSource="{Binding HourlyData}">
+                            <ItemsControl.Style>
+                                <Style TargetType="{x:Type ItemsControl}">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                    <Style.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding RelativeSource={RelativeSource Self}, Path=ItemsSource.Count}"
+                                            Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ItemsControl.Style>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel
+                                        Width="auto"
+                                        Margin="10"
+                                        HorizontalAlignment="Center"
+                                        IsItemsHost="True"
+                                        Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="20">
                                         <TextBlock
-                                            Margin="5,5,2,2"
+                                            Margin="2"
                                             FontSize="20"
                                             FontWeight="Regular"
-                                            Text="{Binding DayName}" />
-                                        <StackPanel Margin="5,2,2,2" Orientation="Horizontal">
-                                            <TextBlock
-                                                FontSize="18"
-                                                FontWeight="Medium"
-                                                Text="{Binding High}" />
-                                            <TextBlock
-                                                Margin="5,0,5,1"
-                                                VerticalAlignment="Bottom"
-                                                FontSize="14"
-                                                FontWeight="Medium"
-                                                Foreground="#444444"
-                                                Text="{Binding Low}" />
-                                        </StackPanel>
+                                            Text="{Binding Temp}" />
                                         <TextBlock
-                                            Margin="5,2,2,5"
+                                            Margin="2"
                                             FontSize="12"
                                             FontWeight="Regular"
                                             Text="{Binding Description}" />
-                                    </StackPanel>
-                                </Border>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </ScrollViewer>
-                <TextBlock
-                    Grid.Row="2"
-                    Margin="50,15,15,15"
-                    FontFamily="Segoe UI Slight"
-                    Visibility="{Binding ElementName=HourlyContainer, Path=Visibility}"
-                    FontSize="24">
-                    Hourly
-                </TextBlock>
-                <ScrollViewer
-                    Grid.Row="3"
-                    MaxWidth="985"
-                    Margin="15,0,15,15"
-                    HorizontalContentAlignment="Center"
-                    HorizontalScrollBarVisibility="Auto"
-                    VerticalScrollBarVisibility="Disabled">
-                    <ItemsControl x:Name="HourlyContainer" ItemsSource="{Binding HourlyData}">
-                        <ItemsControl.Style>
-                            <Style TargetType="{x:Type ItemsControl}">
-                                <Setter Property="Visibility" Value="Visible" />
-                                <Style.Triggers>
-                                    <DataTrigger
-                                        Binding="{Binding RelativeSource={RelativeSource Self}, Path=ItemsSource.Count}"
-                                        Value="0">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ItemsControl.Style>
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel
-                                    Width="auto"
-                                    Margin="10"
-                                    HorizontalAlignment="Center"
-                                    IsItemsHost="True"
-                                    Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Margin="20">
-                                    <TextBlock
-                                        Margin="2"
-                                        FontSize="20"
-                                        FontWeight="Regular"
-                                        Text="{Binding Temp}" />
-                                    <StackPanel Margin="2" Orientation="Horizontal">
                                         <TextBlock
-                                            FontSize="18"
-                                            FontWeight="Medium"
-                                            Text="{Binding Time}" />
-                                        <TextBlock
-                                            Margin="5,0,0,1"
+                                            Margin="2,10,2,2"
                                             VerticalAlignment="Bottom"
                                             FontSize="14"
-                                            FontWeight="Medium"
+                                            FontWeight="Normal"
                                             Foreground="#444444"
                                             Text="{Binding Wind}" />
+                                        <TextBlock
+                                            FontSize="18"
+                                            Margin="2,2,2,2"
+                                            FontWeight="Medium"
+                                            Text="{Binding Time}" />
                                     </StackPanel>
-                                    <TextBlock
-                                        Margin="2"
-                                        FontSize="12"
-                                        FontWeight="Regular"
-                                        Text="{Binding Description}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </ScrollViewer>
-            </Grid>
-        </StackPanel>
-    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+
 </Window>

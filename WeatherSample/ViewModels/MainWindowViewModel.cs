@@ -90,7 +90,7 @@ namespace WeatherSample.ViewModels
                         Temp = $"{forecast.Temp}°C",
                         Description = forecast.Description,
                         Time = DateTime.Parse(forecast.LocalTime).ToShortTimeString(),
-                        Wind = $"{forecast.WindSpeed}m/h"
+                        Wind = $"Wind {forecast.WindSpeed}m/h"
                     }
                 );
             }

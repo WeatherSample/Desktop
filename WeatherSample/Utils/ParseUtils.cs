@@ -27,12 +27,12 @@ namespace WeatherSample.Utils
                 if (i == 0)
                 {
                     day = sequenceDay;
-                    sequences.Add(new List<ForecastModel.Forecast> { forecast });
+                    sequences.Add(new List<ForecastModel.Forecast> {forecast});
                 }
                 else
                 {
                     if (day == sequenceDay) sequences.Last().Add(forecast);
-                    else sequences.Add(new List<ForecastModel.Forecast> { forecast });
+                    else sequences.Add(new List<ForecastModel.Forecast> {forecast});
                     day = sequenceDay;
                 }
             }
