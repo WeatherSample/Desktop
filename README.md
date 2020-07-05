@@ -16,4 +16,4 @@ Run:
 Before running it you need change .net secrets to your otherwise solution will started with excetpion. (Or you can replace in Secrets class values of static fields directly.)
 Also don't forget run the backend project, the same with .net secret.
 
-![](./assets/Demo.png)
+![](Assets/Demo.png)
