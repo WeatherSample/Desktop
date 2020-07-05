@@ -15,7 +15,7 @@ namespace WeatherSample.Utils
         /// </summary>
         /// <param name="city">City data class instance for parse it.</param>
         /// <returns>Enumerable with list of forecasts, every list is one day.</returns>
-        public static IEnumerable<List<ForecastModel.Forecast>> SequencesOfForecast(ForecastModel.City city)
+        public static List<List<ForecastModel.Forecast>> SequencesOfForecast(ForecastModel.City city)
         {
             int day = -1;
             var sequences = new List<List<ForecastModel.Forecast>>();

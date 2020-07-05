@@ -4,26 +4,31 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
 using Prism.Commands;
 using Prism.Mvvm;
 using WeatherSample.Models;
 using WeatherSample.Services;
 using WeatherSample.Utils;
 
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedType.Global
+// ReSharper disable UnusedMember.Global
+
 namespace WeatherSample.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
-        private ForecastProviderService _service;
+        private readonly ForecastProviderService _service;
+        private ForecastModel.City? _data;
+        private List<List<ForecastModel.Forecast>> _dataSequences;
 
+#pragma warning disable 8618
         public MainWindowViewModel(ForecastProviderService service)
         {
             _service = service;
             FetchCommand.Execute();
         }
+#pragma warning restore 8618
 
         private string _selectedCity = "Bryansk";
         private void SelectedCityChanged() => FetchCommand.RaiseCanExecuteChanged();
@@ -66,8 +71,32 @@ namespace WeatherSample.ViewModels
             set => SetProperty(ref _updatedAt, $"Data updated at {value}");
         }
 
-        private ObservableCollection<DisplayMetaModel> _metaData =
-            new ObservableCollection<DisplayMetaModel>();
+        private int _selectedDay = -1;
+
+        public int SelectedDay
+        {
+            get => _selectedDay;
+            set => SetProperty(ref _selectedDay, value, SelectedDayChanged);
+        }
+
+        private void SelectedDayChanged()
+        {
+            HourlyData.Clear();
+            foreach (var forecast in _dataSequences[_selectedDay])
+            {
+                HourlyData.Add(
+                    new DisplayHourlyModel
+                    {
+                        Temp = $"{forecast.Temp}°C",
+                        Description = forecast.Description,
+                        Time = DateTime.Parse(forecast.LocalTime).ToShortTimeString(),
+                        Wind = $"{forecast.WindSpeed}m/h"
+                    }
+                );
+            }
+        }
+
+        private ObservableCollection<DisplayMetaModel> _metaData = new ObservableCollection<DisplayMetaModel>();
 
         public ObservableCollection<DisplayMetaModel> MetaData
         {
@@ -75,8 +104,7 @@ namespace WeatherSample.ViewModels
             set => SetProperty(ref _metaData, value);
         }
 
-        private ObservableCollection<DisplayDailyModel> _dailyData =
-            new ObservableCollection<DisplayDailyModel>();
+        private ObservableCollection<DisplayDailyModel> _dailyData = new ObservableCollection<DisplayDailyModel>();
 
         public ObservableCollection<DisplayDailyModel> DailyData
         {
@@ -84,49 +112,45 @@ namespace WeatherSample.ViewModels
             set => SetProperty(ref _dailyData, value);
         }
 
-        private DelegateCommand _selectCommand;
+        private ObservableCollection<DisplayHourlyModel> _hourlyData = new ObservableCollection<DisplayHourlyModel>();
 
-        public DelegateCommand SelectCommand =>
-            _selectCommand ??= new DelegateCommand(ExecuteSelectCommand);
-
-        private void ExecuteSelectCommand()
+        public ObservableCollection<DisplayHourlyModel> HourlyData
         {
-            Console.Out.WriteLine("TEST");
+            get => _hourlyData;
+            set => SetProperty(ref _hourlyData, value);
         }
 
         private DelegateCommand _fetchCommand;
-
-        public DelegateCommand FetchCommand =>
-            _fetchCommand ??= new DelegateCommand(ExecuteFetchCommand, CanExecuteFetchCommand);
-
         private bool CanExecuteFetchCommand() => !string.IsNullOrEmpty(SelectedCity);
+
+        public DelegateCommand FetchCommand => _fetchCommand ??= new DelegateCommand(
+            ExecuteFetchCommand, CanExecuteFetchCommand
+        );
 
         private async void ExecuteFetchCommand()
         {
-            var result = await _service.ForecastOf(SelectedCity);
-            if (result == null)
+            _data = await _service.ForecastOf(SelectedCity);
+            if (_data == null)
             {
                 MessageBox.Show($"Hey, city with name {SelectedCity} not found.");
             }
             else
             {
-                CurrentCity = result.CityName;
-                CurrentTemp = result.Forecasts.First().Temp.ToString(CultureInfo.InvariantCulture);
-                CurrentWeather = result.Forecasts.First().Description;
-                UpdatedAt = result.Forecasts.First().LocalTime;
+                CurrentCity = _data.CityName;
+                CurrentTemp = _data.Forecasts.First().Temp.ToString(CultureInfo.InvariantCulture);
+                CurrentWeather = _data.Forecasts.First().Description;
+                UpdatedAt = _data.Forecasts.First().LocalTime;
 
                 MetaData.Clear();
-                MetaData.Add(new DisplayMetaModel
-                    {Value = $"Feels like {result.Forecasts.First().FeelsLike}°C"});
-                MetaData.Add(new DisplayMetaModel
-                    {Value = $"Wind {result.Forecasts.First().WindSpeed * 3.6}km/h"});
-                MetaData.Add(new DisplayMetaModel
-                    {Value = $"Humidity {result.Forecasts.First().Humidity}%"});
-                MetaData.Add(new DisplayMetaModel
-                    {Value = $"Pressure {result.Forecasts.First().Pressure}mb"});
+                MetaData.Add(new DisplayMetaModel {Value = $"Feels like {_data.Forecasts.First().FeelsLike}°C"});
+                MetaData.Add(new DisplayMetaModel {Value = $"Wind {_data.Forecasts.First().WindSpeed}m/h"});
+                MetaData.Add(new DisplayMetaModel {Value = $"Humidity {_data.Forecasts.First().Humidity}%"});
+                MetaData.Add(new DisplayMetaModel {Value = $"Pressure {_data.Forecasts.First().Pressure}mb"});
 
                 DailyData.Clear();
-                foreach (var sequence in ParseUtils.SequencesOfForecast(result))
+                _dataSequences = ParseUtils.SequencesOfForecast(_data);
+
+                foreach (var sequence in _dataSequences)
                 {
                     var date = DateTime.Parse(sequence.First().LocalTime);
                     DailyData.Add(
@@ -139,6 +163,8 @@ namespace WeatherSample.ViewModels
                         }
                     );
                 }
+
+                SelectedDay = 0;
             }
         }
     }

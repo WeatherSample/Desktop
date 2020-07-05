@@ -152,7 +152,7 @@
                         x:Name="DailyItemContainer"
                         BorderBrush="Transparent"
                         ItemsSource="{Binding DailyData}"
-                        SelectedIndex="0">
+                        SelectedIndex="{Binding SelectedDay, Mode=TwoWay}">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="Template">
@@ -243,6 +243,7 @@
                     Grid.Row="2"
                     Margin="50,15,15,15"
                     FontFamily="Segoe UI Slight"
+                    Visibility="{Binding ElementName=HourlyContainer, Path=Visibility}"
                     FontSize="24">
                     Hourly
                 </TextBlock>
@@ -253,7 +254,7 @@
                     HorizontalContentAlignment="Center"
                     HorizontalScrollBarVisibility="Auto"
                     VerticalScrollBarVisibility="Disabled">
-                    <ItemsControl ItemsSource="{Binding DailyData}">
+                    <ItemsControl x:Name="HourlyContainer" ItemsSource="{Binding HourlyData}">
                         <ItemsControl.Style>
                             <Style TargetType="{x:Type ItemsControl}">
                                 <Setter Property="Visibility" Value="Visible" />
@@ -283,19 +284,19 @@
                                         Margin="2"
                                         FontSize="20"
                                         FontWeight="Regular"
-                                        Text="{Binding DayName}" />
+                                        Text="{Binding Temp}" />
                                     <StackPanel Margin="2" Orientation="Horizontal">
                                         <TextBlock
                                             FontSize="18"
                                             FontWeight="Medium"
-                                            Text="{Binding High}" />
+                                            Text="{Binding Time}" />
                                         <TextBlock
                                             Margin="5,0,0,1"
                                             VerticalAlignment="Bottom"
                                             FontSize="14"
                                             FontWeight="Medium"
                                             Foreground="#444444"
-                                            Text="{Binding Low}" />
+                                            Text="{Binding Wind}" />
                                     </StackPanel>
                                     <TextBlock
                                         Margin="2"
