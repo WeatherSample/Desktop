@@ -1,6 +1,6 @@
-﻿using RestSharp;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
+using RestSharp;
 using WeatherSample.Models;
 
 namespace WeatherSample.Services

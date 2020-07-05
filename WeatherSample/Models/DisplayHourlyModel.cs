@@ -2,9 +2,9 @@
 {
     public class DisplayHourlyModel
     {
-        public string Temp { get; set; }
-        public string Description { get; set; }
-        public string Wind { get; set; }
-        public string Time { get; set; }
+        public string Temp { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string Wind { get; set; } = string.Empty;
+        public string Time { get; set; } = string.Empty;
     }
 }
