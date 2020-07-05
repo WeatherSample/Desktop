@@ -82,7 +82,8 @@ namespace WeatherSample.ViewModels
         private void SelectedDayChanged()
         {
             HourlyData.Clear();
-            foreach (var forecast in _dataSequences[_selectedDay])
+            if (SelectedDay == -1) return;
+            foreach (var forecast in _dataSequences[SelectedDay])
             {
                 HourlyData.Add(
                     new DisplayHourlyModel

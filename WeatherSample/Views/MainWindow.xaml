@@ -98,9 +98,7 @@
                         <Style TargetType="{x:Type ItemsControl}">
                             <Setter Property="Visibility" Value="Visible" />
                             <Style.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding RelativeSource={RelativeSource Self}, Path=ItemsSource.Count}"
-                                    Value="0">
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=ItemsSource.Count}" Value="0">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -127,8 +125,7 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-                <Grid Margin="5,0,5,0"
-                      Visibility="{Binding ElementName=DailyItemContainer, Path=Visibility}">
+                <Grid Margin="5,0,5,0" Visibility="{Binding ElementName=DailyItemContainer, Path=Visibility}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -172,9 +169,7 @@
                                     <Setter Property="Margin" Value="5" />
                                     <Setter Property="Visibility" Value="Visible" />
                                     <Style.Triggers>
-                                        <DataTrigger
-                                            Binding="{Binding RelativeSource={RelativeSource Self}, Path=ItemsSource.Count}"
-                                            Value="0">
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=ItemsSource.Count}" Value="0">
                                             <Setter Property="Visibility" Value="Collapsed" />
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -197,14 +192,10 @@
                                             <Style TargetType="Border">
                                                 <Setter Property="BorderThickness" Value="2" />
                                                 <Style.Triggers>
-                                                    <DataTrigger
-                                                        Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
-                                                        Value="True">
+                                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
                                                         <Setter Property="BorderBrush" Value="#bcbcbc" />
                                                     </DataTrigger>
-                                                    <DataTrigger
-                                                        Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
-                                                        Value="True">
+                                                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
                                                         <Setter Property="BorderBrush" Value="#0074CF" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -244,13 +235,13 @@
                         Grid.Row="2"
                         Margin="50,15,15,15"
                         FontFamily="Segoe UI Slight"
-                        Visibility="{Binding ElementName=HourlyContainer, Path=Visibility}"
-                        FontSize="24">
+                        FontSize="24"
+                        Visibility="{Binding ElementName=HourlyContainer, Path=Visibility}">
                         Hourly
                     </TextBlock>
                     <ScrollViewer
                         Grid.Row="3"
-                        MaxWidth="985"
+                        MaxWidth="1100"
                         Margin="15,0,15,15"
                         HorizontalContentAlignment="Center"
                         HorizontalScrollBarVisibility="Auto"
@@ -260,9 +251,7 @@
                                 <Style TargetType="{x:Type ItemsControl}">
                                     <Setter Property="Visibility" Value="Visible" />
                                     <Style.Triggers>
-                                        <DataTrigger
-                                            Binding="{Binding RelativeSource={RelativeSource Self}, Path=ItemsSource.Count}"
-                                            Value="0">
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=ItemsSource.Count}" Value="0">
                                             <Setter Property="Visibility" Value="Collapsed" />
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -299,8 +288,8 @@
                                             Foreground="#444444"
                                             Text="{Binding Wind}" />
                                         <TextBlock
-                                            FontSize="18"
                                             Margin="2,2,2,2"
+                                            FontSize="18"
                                             FontWeight="Medium"
                                             Text="{Binding Time}" />
                                     </StackPanel>
@@ -312,5 +301,4 @@
             </StackPanel>
         </Grid>
     </ScrollViewer>
-
 </Window>
