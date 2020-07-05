@@ -1,12 +1,11 @@
-﻿using Prism.Ioc;
-using Prism.Ninject;
-using System.Windows;
+﻿using System.Windows;
+using Prism.Ioc;
 using WeatherSample.Services;
 using WeatherSample.Views;
 
 namespace WeatherSample
 {
-    public partial class App : PrismApplication
+    public partial class App
     {
         protected override Window CreateShell() => Container.Resolve<MainWindow>();
 
